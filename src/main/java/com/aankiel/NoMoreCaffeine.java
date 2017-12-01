@@ -1,42 +1,23 @@
+package com.aankiel;
+
 import java.io.IOException;
-import java.lang.Runtime;
 import java.lang.InterruptedException;
 import java.util.logging.Logger;
+
+import com.aankiel.logging.LoggerHelper;
+
 import java.util.logging.Level;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
 
 public class NoMoreCaffeine {
-	private static final Logger LOGGER = Logger.getLogger( NoMoreCaffeine.class.getName() );
+	
+	private static final Logger LOGGER = new LoggerHelper(NoMoreCaffeine.class.getName()).getLogger();
 
 	public static void main(String[] args) throws IOException {
-		initLogger();
+		LOGGER.warning("NoMoreCaffeine Starting...");
 		killProcess("caffeine.exe");
 		LOGGER.warning("NoMoreCaffeine Exiting...");
 	}
 
-	private static void initLogger() {
-		Handler consoleHandler = null;
-        Handler fileHandler  = null;
-		try{
-        	consoleHandler = new ConsoleHandler();
-            fileHandler  = new FileHandler("./NoMoreCaffeine.log");
-
-            // assign handlers to logger
-            LOGGER.addHandler(consoleHandler);
-	        LOGGER.addHandler(fileHandler);
-
-	        // set levels
-	        consoleHandler.setLevel(Level.ALL);
-            fileHandler.setLevel(Level.ALL);
-            LOGGER.setLevel(Level.ALL);
-            LOGGER.warning("NoMoreCaffeine Starting...");
-        }
-        catch(IOException exception){
-        	LOGGER.log(Level.SEVERE, "Exception in initLogger");
-        }
-	}
 
 	private static void killProcess(String processName) {
 		String processString = "Taskkill /IM " + processName + " /F";
